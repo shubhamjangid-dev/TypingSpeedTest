@@ -1,0 +1,48 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body{
+  font-family: 'roboto',sans-serif;
+}
+input{
+  width: 330px;
+  height:40px;
+  border-radius: 20px;
+  border: 1px solid black;
+  padding-left: 10px;
+  margin: 5px;
+}
+input[type="submit"]{
+  background-color: rgb(8, 8, 58);
+  color: white;
+  margin-bottom: 20px;
+}
+.container{
+  margin: 100px 100px;
+  width:400px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 40px;
+}
+.main{
+  display: flex;
+  width: 100%;
+  
+}
+.welcome{
+  text-align: center;
+  width: 100%;
+  font-size: 30px;
+}
+
+.switch{
+  padding-top: 10px;
+  text-align: center;
+  width: 100%;
+  font-size: 15px;
+}
+
