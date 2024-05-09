@@ -1,5 +1,5 @@
 
-const words = "The brown dog jumped over the lazy fox chasing its tail through the green meadow Birds chirped melodiously above while a gentle breeze rustled the leaves of the tall trees Sunlight filtered through the canopy casting dappled shadows on the forest floor The scent of pine and earth filled the air mingling with the sweet fragrance of wildflowers Butterflies danced among the blooms their colorful wings fluttering gracefully In the distance a stream gurgled softly its clear waters reflecting the azure sky above Nature symphony played on a tranquil melody in this serene wilderness".split(' ');
+const words = "the brown dog jumped over lazy fox chasing its tail through green meadow birds chirped melodiously above while a gentle breeze rustled leaves of the tall trees sunlight filtered through the canopy casting dappled shadows on the forest floor scent of pine and earth filled the air mingling with the sweet fragrance of wildflowers butterflies danced among the blooms their colorful wings fluttering gracefully in the distance a stream gurgled softly its clear waters reflecting the azure sky above nature symphony played on a tranquil melody in this serene wilderness".split(' ');
 const wordCount = words.length;
 
 let gameStart = false;
@@ -8,55 +8,6 @@ const clock = document.getElementById('timer');
 let flagOfNewLine = false;
 let noOfWords = 0;
 
-const gamePage = `
-<div class="logo">
-  <img src="app-preview.jpeg">
-</div>
-<div class="navbar">
-  <div class="menu"><i class="fa-solid fa-bars fa-xs"></i></div>
-  <div class="s"></div>
-  <div class="s"></div>
-</div>
-<div class="main">
-  <div class="levelBar">
-    <div class="level"></div>
-    <div class="level"></div>
-    <div class="level"></div>
-    <div class="level"></div>
-    <div class="level"></div>
-    <div class="level"></div>
-    <div class="level"></div>
-    <div class="level"></div>
-    <div class="level"></div>
-    <div class="level"></div>
-    <div class="level"></div>
-    <div class="level"></div>
-    <div class="level"></div>
-    <div class="level"></div>
-    <div class="level"></div>
-    <div class="level"></div>
-    <div class="level"></div>
-    <div class="level"></div>
-    <div class="level"></div>
-    <div class="level"></div>
-  </div>
-  <div class = "article">
-    <div id="header">
-      <div id="timer">0 : 0</div>
-      <div id="reset">
-          <button>Reset</button>
-      </div>
-    </div>
-    <div id="game">
-      <div id="words">
-
-      </div>
-    </div>
-    <div class="result" id="WordsPerMin">24 <br>Words Per Minute</div>
-    <div class="result" id="accuracy">97%<br>Accuracy</div>
-  </div>
-</div>
-<script src="../login.js"></script>`
 
 function addClass(element,name){
     element.className += " " + name;
@@ -77,6 +28,17 @@ function formatWord(word){
 }
 
 
+function newGame(){
+  const typingArea = document.getElementById('words');
+  typingArea.innerHTML="";
+  for(let i=0; i<200;i++)
+  {
+    typingArea.innerHTML += formatWord(randomWord());
+  }
+  addClass(document.querySelector('.word'),'current');
+  addClass(document.querySelector('.letter'),'current');
+}
+
 document.getElementById("reset").addEventListener("click",()=>{
     gameStart = false;
     flagOfNewLine = false;
@@ -85,25 +47,16 @@ document.getElementById("reset").addEventListener("click",()=>{
     clearInterval(myInterval);
     document.getElementById('accuracy').innerHTML = `100%<br>Accuracy`
     document.getElementById('WordsPerMin').innerHTML = `0<br>Words Per Minute`
+    document.getElementById('words').style.marginTop = '0px';
     newGame();
 });
-function newGame(){
-    const typingArea = document.getElementById('words');
-    typingArea.innerHTML="";
-    for(let i=0; i<200;i++)
-    {
-        typingArea.innerHTML += formatWord(randomWord());
-    }
-    addClass(document.querySelector('.word'),'current');
-    addClass(document.querySelector('.letter'),'current');
-}
 
 function updateTime(){
     endTime = new Date().getTime();
     let seconds = ((endTime - startTime)/1000).toFixed(0);
     clock.innerText = `${seconds} sec`
 }
-const myInterval = setInterval(updateTime,1000);
+var myInterval;
 
 window.addEventListener('keydown', function (e) {
     const key = e.key;
@@ -116,7 +69,7 @@ window.addEventListener('keydown', function (e) {
         gameStart = true;
         startTime = new Date().getTime();
         endTime = startTime;
-        myInterval();
+        myInterval = setInterval(updateTime,1000)
     }
     // console.log(currentLetter , key , currentLetter ===key) ;
     // console.log(key<='z' && key>='a');
