@@ -118,26 +118,7 @@ document.getElementById("register").addEventListener("submit", function(event) {
 </div>
 <div class="main">
   <div class="levelBar">
-    <div class="level"></div>
-    <div class="level"></div>
-    <div class="level"></div>
-    <div class="level"></div>
-    <div class="level"></div>
-    <div class="level"></div>
-    <div class="level"></div>
-    <div class="level"></div>
-    <div class="level"></div>
-    <div class="level"></div>
-    <div class="level"></div>
-    <div class="level"></div>
-    <div class="level"></div>
-    <div class="level"></div>
-    <div class="level"></div>
-    <div class="level"></div>
-    <div class="level"></div>
-    <div class="level"></div>
-    <div class="level"></div>
-    <div class="level"></div>
+    
   </div>
   <div class = "article">
     <div id="header">

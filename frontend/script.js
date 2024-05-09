@@ -1,5 +1,25 @@
 
-const words = "the brown dog jumped over lazy fox chasing its tail through green meadow birds chirped melodiously above while a gentle breeze rustled leaves of the tall trees sunlight filtered through the canopy casting dappled shadows on the forest floor scent of pine and earth filled the air mingling with the sweet fragrance of wildflowers butterflies danced among the blooms their colorful wings fluttering gracefully in the distance a stream gurgled softly its clear waters reflecting the azure sky above nature symphony played on a tranquil melody in this serene wilderness".split(' ');
+    // Make POST request to the API
+    fetch("http://localhost:4500/api/v1/levels/getAllLevels", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+    //   console.log(data);
+        const levelBar = document.querySelector('.levelBar');
+        data.forEach(element => {
+            levelBar.innerHTML += `<div class="level" id="${element._id}" >${element.levelName}</div>`;
+        });
+    })
+    .catch(error => {
+      console.error("Error:", error);
+      document.getElementById("response").innerText = "An error occurred. Please try again later.";
+    });
+
+let words = "the brown dog jumped over lazy fox chasing its tail through green meadow birds chirped melodiously above while a gentle breeze rustled leaves of the tall trees sunlight filtered through the canopy casting dappled shadows on the forest floor scent of pine and earth filled the air mingling with the sweet fragrance of wildflowers butterflies danced among the blooms their colorful wings fluttering gracefully in the distance a stream gurgled softly its clear waters reflecting the azure sky above nature symphony played on a tranquil melody in this serene wilderness".split(' ');
 const wordCount = words.length;
 
 let gameStart = false;
@@ -31,15 +51,14 @@ function formatWord(word){
 function newGame(){
   const typingArea = document.getElementById('words');
   typingArea.innerHTML="";
-  for(let i=0; i<200;i++)
+  for(let i=0; i<words.length;i++)
   {
-    typingArea.innerHTML += formatWord(randomWord());
+    typingArea.innerHTML += formatWord(words[i]);
   }
   addClass(document.querySelector('.word'),'current');
   addClass(document.querySelector('.letter'),'current');
 }
-
-document.getElementById("reset").addEventListener("click",()=>{
+const reset = function(){
     gameStart = false;
     flagOfNewLine = false;
     noOfWords = 0;
@@ -49,7 +68,8 @@ document.getElementById("reset").addEventListener("click",()=>{
     document.getElementById('WordsPerMin').innerHTML = `0<br>Words Per Minute`
     document.getElementById('words').style.marginTop = '0px';
     newGame();
-});
+};
+document.getElementById("reset").addEventListener("click",reset);
 
 function updateTime(){
     endTime = new Date().getTime();
@@ -168,9 +188,11 @@ window.addEventListener('keydown', function (e) {
 newGame();
 
 let menuHidden = true;
+
 document.querySelector('.menu').addEventListener('click',()=>{
     if(menuHidden)
     {
+        document.querySelector('.levelBar').style.display = 'block';
         document.querySelector('.levelBar').style.width = '20%';
         document.querySelector('.article').style.width = '80%';
         document.querySelector('.article').style.left = '22%';
@@ -178,6 +200,7 @@ document.querySelector('.menu').addEventListener('click',()=>{
         menuHidden = false;
     }
     else{
+        document.querySelector('.levelBar').style.display = 'none';
         document.querySelector('.levelBar').style.width = '0%';
         document.querySelector('.article').style.width = '100%';
         document.querySelector('.article').style.left = '4%';
@@ -185,7 +208,34 @@ document.querySelector('.menu').addEventListener('click',()=>{
     }
 })
 
-
+document.querySelector('.levelBar').addEventListener('click', (e)=>{
+    // console.log(e.target);
+    if(e.target.className === 'level')
+    {
+        console.log(e.target);
+        var data = {
+            id : e.target.getAttribute('id')
+        }
+        fetch("http://localhost:4500/api/v1/levels/getLevelContent", {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+            // console.log(data.levelContent);
+            words = data.levelContent.split(' ');
+            document.querySelector('.levelName').innerText = data.levelName;
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            document.getElementById("response").innerText = "An error occurred. Please try again later.";
+        });
+        reset();
+    }
+});
 
 
 

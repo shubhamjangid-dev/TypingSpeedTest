@@ -51,11 +51,16 @@ img{
   margin-top: 190px;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
 }
+.levelName{
+  font-size: 1.5rem;
+  margin: auto;
+}
 .level{
-  height: 3rem;
   width: 90%;
   background-color: #6CB4EE;
   margin: 5% 5% 0px 5%;
+  padding : 0.7rem 0rem;
+  font-size: 1.5rem;
   border-radius: 10px;
 }
 .article{
