@@ -2,11 +2,11 @@ import mongoose , { Schema } from "mongoose";
 
 const levelAchievedSchema = new Schema({
     level:{
-        type : Schema.Types.ObjectId, // janta
+        type : Schema.Types.ObjectId, 
         ref : "Level"
     },
     user:{
-        type : Schema.Types.ObjectId, // creaters
+        type : Schema.Types.ObjectId, 
         ref : "User"
     },
     score: {

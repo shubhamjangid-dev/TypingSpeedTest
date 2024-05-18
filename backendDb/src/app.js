@@ -17,6 +17,7 @@ app.use(cookieParser());
 // Routes Import 
 import userRouter from "./routes/user.routes.js"
 import levelRouter from "./routes/level.routes.js"
+import scoreRouter from "./routes/score.routes.js"
 
 // Routes Declaration
 // ex : http:localhost:4000/api/v1/users/register to ye prefix match krega 
@@ -24,6 +25,7 @@ import levelRouter from "./routes/level.routes.js"
 
 app.use("/api/v1/users",userRouter);
 app.use("/api/v1/levels",levelRouter);
+app.use("/api/v1/score",scoreRouter);
 
 // app.use("/api/v1/users",()=>{
 //     console.log("chal raah h");
@@ -31,4 +33,4 @@ app.use("/api/v1/levels",levelRouter);
 
 
 
-export {app};
+export { app };

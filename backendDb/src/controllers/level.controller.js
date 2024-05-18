@@ -1,4 +1,4 @@
-import { asyncHandler } from "../utils/asyncHandler.js";
+ import { asyncHandler } from "../utils/asyncHandler.js";
  import { ApiError } from "../utils/ApiError.js";
  import { Level } from "../model/levels.model.js";
  import { ApiResponse } from "../utils/ApiResponse.js";
@@ -57,6 +57,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 
 
  const getLevelContent = asyncHandler(async (req, res) => {
+    // console.log(req.user);
     const {id} = req.body;
     // console.log(id);
     try {

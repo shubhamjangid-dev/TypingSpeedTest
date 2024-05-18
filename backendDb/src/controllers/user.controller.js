@@ -92,6 +92,7 @@
  })
 
  const loginUser = asyncHandler( async(req, res)=>{
+
     // req.body ->data
     // username, email, password
     // find user -> not found send user not found
@@ -145,6 +146,7 @@
  })
 
  const logoutUser = asyncHandler(async(req,res) =>{
+    console.log(req.user._id);
     User.findByIdAndUpdate(
         req.user._id,
         {
