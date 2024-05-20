@@ -23,14 +23,9 @@ import scoreRouter from "./routes/score.routes.js"
 // ex : http:localhost:4000/api/v1/users/register to ye prefix match krega 
 // ex : http:localhost:4000/api/v1/users/login to login or register user sirg routes me hi honge 
 
-app.use("/api/v1/users",userRouter);
-app.use("/api/v1/levels",levelRouter);
-app.use("/api/v1/score",scoreRouter);
+app.use("/api/v1/users",userRouter);    // User Related
+app.use("/api/v1/levels",levelRouter);  // Level Related
+app.use("/api/v1/score",scoreRouter);   // Score Related
 
-// app.use("/api/v1/users",()=>{
-//     console.log("chal raah h");
-// });
-
-
-
+// app is ecported to use in index.js file
 export { app };

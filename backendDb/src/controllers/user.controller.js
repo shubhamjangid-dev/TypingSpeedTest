@@ -2,6 +2,7 @@
  import { ApiError } from "../utils/ApiError.js";
  import { User } from "../model/user.model.js";
  import { ApiResponse } from "../utils/ApiResponse.js";
+ import cookieParser from "cookie-parser";
  import jwt from "jsonwebtoken";
 
  const generateAccessTokenAndRefreshToken = async (userId) =>{
@@ -12,7 +13,7 @@
         const refreshToken = user.generateRefreshToken();
         // console.log("refreshToken",refreshToken);
 
-        user.refreshToken = refreshToken;
+        user.refreshTokens = refreshToken;
 
         await user.save({validateBeforeSave : false})
 
@@ -32,8 +33,6 @@
     // get user details from frontend
     // validation - not empty
     // check if user already exists: username, email
-    // check for images, check for avatar
-    // upload them to cloudinary, avatar
     // create user object - create entry in db
     // remove password and refresh token field from response
     // check for user creation
@@ -42,10 +41,6 @@
 
     const {fullname, email, username, password} = req.body
     // console.log(req.body);
-    // console.log("fullname ", fullname);
-    // console.log("email ", email);
-    // console.log("username ", username);
-    // console.log("password ", password);
     if(fullname.trim() ===""){
         throw new ApiError(400, "Enter valid name")
     }
@@ -100,7 +95,7 @@
     // access and refresh token
     // send cookie
     const { email, username, password } = req.body
-    console.log(username, email, password);
+    // console.log(username, email, password);
     if(!email && !username)
     {
         throw new ApiError(400,"username or password required")
@@ -121,11 +116,11 @@
 
     const { accessToken, refreshToken } = await generateAccessTokenAndRefreshToken(user._id);
 
-    const loggedInUser = await User.findById(user._id).select("-password -refreshToken");
+    const loggedInUser = await User.findById(user._id).select("-password -refreshTokens");
 
     const options = {
         httpOnly : true,
-        secure : true
+        secure : true, 
     }
 
     return res
@@ -297,6 +292,48 @@
     )
  })
 
+ const getUserLevelBoard = asyncHandler(async (req, res) => {
+    const id = req.user?._id
+
+    // Aggregate Pipeline read docs on mongodb
+    const levelData = await User.aggregate([
+        {
+          $match: {
+            _id: id
+          }
+        },
+        {
+          $lookup: {
+            from: "levelachieveds",
+            localField: "_id",
+            foreignField: "user",
+            as: "achievements"
+          }
+        },
+        {
+          $unwind: "$achievements"
+        },
+        {
+          $project: {
+            levelId: "$achievements.level",
+            score: "$achievements.score"
+          }
+        }
+      ]
+      )
+
+    // console.log(channels);
+
+    if(!levelData.length)
+    {
+        throw new ApiError(404,"LevelData does not Exist")
+    }
+
+    return res
+    .status(200)
+    .json(levelData);
+ })
+
 
  export { 
     registerUser, 
@@ -306,4 +343,5 @@
     changeCurrentPassword,
     getCurrentUser,
     updateUserDetails,
+    getUserLevelBoard
 }; 

@@ -1,17 +1,13 @@
-// import mongoose from "mongoose";             // ye dono db folder me transfer kr diya
-// import { DB_NAME } from "./constants";       // database connection db folder me hi hoga
 import express from "express";
 import connectDB from "./db/index.js"
 import {app} from "./app.js"
-// const app = express(); 
-
-// require('dotenv').config() // proper tarika niche h
 import dotenv from "dotenv";
 dotenv.config({
     path :'./.env'
-}) // ye require walw me nahi krna
+})
 
-connectDB()
+connectDB() // connect to database
+
 .then(()=>{
     app.listen(process.env.PORT || 3000, ()=>{
         console.log(`App is running at PORT : ${process.env.PORT}` );

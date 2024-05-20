@@ -57,7 +57,7 @@
 
 
  const getLevelContent = asyncHandler(async (req, res) => {
-    // console.log(req.user);
+    console.log(req);
     const {id} = req.body;
     // console.log(id);
     try {

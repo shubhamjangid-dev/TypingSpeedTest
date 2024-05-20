@@ -5,8 +5,8 @@ import { User } from "../model/user.model.js";
 
 export const verifyJWT = asyncHandler(async (req, res, next) =>{
     try {
-        console.log(req);
-        const token = req.cookies?.accessToken || req.header("authorization")?.replace("Bearer ", "")
+        // console.log(req);
+        const token = req.cookies?.accessToken || req.header("authorization")?.replace("Bearer ", "" ) || req.body.accessToken
         if(!token){
             throw new ApiError(401, "Not authorized to access this route");
         }
