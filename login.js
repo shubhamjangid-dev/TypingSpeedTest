@@ -1,4 +1,6 @@
 let loginHidden = false;
+let accessToken ;
+let refreshToken ;
 document.querySelector('#login').style.display = 'block';
 document.querySelector('#register').style.display = 'none';
 document.querySelector('.switch').addEventListener('click',()=>{
@@ -17,8 +19,6 @@ document.querySelector('.switch').addEventListener('click',()=>{
     document.querySelector('.switch').innerText = `Already have account?`
   }
 })
-
-
 
 document.getElementById("login").addEventListener("submit", function(event) {
     event.preventDefault(); // Prevent form submission
@@ -49,6 +49,8 @@ document.getElementById("login").addEventListener("submit", function(event) {
       if (data.success) {
         document.getElementById("response").innerText = "Login successful!";
         // document.querySelector("body").innerHTML = gamePage;
+        accessToken = data.data.accessToken;
+        refreshToken = data.data.refreshToken;
         window.location.href = "./frontend/index.html";
         // Perform actions after successful login, like redirecting to another page
       } else {

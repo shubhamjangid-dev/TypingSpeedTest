@@ -1,5 +1,10 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 body{
-    font-family: 'roboto',sans-serif;
+  font-family: "Inter", sans-serif;
     font-size: 2.4rem;
     justify-content: center;
 }
@@ -20,6 +25,7 @@ body{
   width: 100%;
   padding-top: 30px;
   padding-bottom: 30px;
+  z-index: 1;
 }
 img{
   width: 500px;
@@ -27,49 +33,79 @@ img{
   
 }
 .navbar{
+  font-size: 25px;
   position: fixed;
-  top: 150px;
-  background-color: white;
-  height: 40px;
+  color: white;
+  /* top: 150px; */
+  top: 0px;
+  background-color: rgb(3, 7, 45);
+  height: 35px;
   width: 100%;
   display: flex;
-  border: 1px solid black;
+  /* border: 1px solid black; */
+  z-index: 1;
 }
 
 .menu{
-  height: 40px;
-  width: 40px;
-  padding: 0px 7px;
-}
-.main{
-  display:flex;
-}
-.levelBar{
+  font-size: 20px;
+  padding: 5px 7px;
   width: 20%;
-  border-radius: 20px;
-  margin-right: 20px;
-  margin-top: 190px;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
 }
 .levelName{
-  font-size: 1.5rem;
+  font-size: 15px;
+  padding: 8px 15px;
   margin: auto;
+  width: 40%;
+}
+.userDetails{
+  font-size: 15px;
+  padding: 8px 15px;
+  width: 40%;
+  text-align: right;
+}
+
+.main{
+  display:flex;
+  filter: blur(4px);
+  z-index: -1;
+}
+.levelBar{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  /* border-radius: 20px; */
+  margin-right: 20px;
+  /* margin-top: 190px; */
+  margin-top: 40px;
+  /* box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px; */
+  padding: .2%;
 }
 .level{
-  width: 90%;
+  width: 33%;
+  display: flex;
   background-color: #6CB4EE;
-  margin: 5% 5% 0px 5%;
+  margin: 4%;
   padding : 0.7rem 0rem;
   font-size: 1.5rem;
   border-radius: 10px;
+  justify-content: space-between;
+  align-items: center;
+}
+.score{
+  background-color: #054f8a;
+  margin-left: auto;
+  padding: 0px 5px;
+  border-radius: 3px;
 }
 .article{
-  width: 80%;
+  width: 90%;
   position: fixed;
-  top: 200px;
-  left: 22%;
+  top: 50px;
+  /* left: 22%; */
   display: flex;
+  display: none;
   flex-direction: column;
+  margin: 0% 5%;
 }
 .result
 {
@@ -81,7 +117,6 @@ img{
   align-self: end;
   padding: 10px;
   font-size: 20px;
-  font-family:"arial";
   color: #6CB4EE;
   text-align: center;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;}
@@ -93,7 +128,7 @@ div.word{
 #game{
     line-height: 60px;
     height: 240px;
-    width: 90%;
+    width: 100%;
     overflow: hidden;
     /* border: 1px solid #007bff; */
     border-radius: 20px;
@@ -126,39 +161,73 @@ div.word{
 }
 
 
+.resultPopUp{
+  margin: auto;
+  width:40%;
+  padding: 30px;
+  display: flex;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  background: #6CB4EE;
+  position: fixed;
+  top: 25%;
+  left: 30%;
+  z-index: 10;
+  font-size: 25px;
+}
+.box{
+  text-align: center;
+  display: flex;
+  margin: auto;
+  font-size: 3rem;
+}
+button{
+  width:20%;
+  height:40px;
+  font-size: 20px;
+  border-radius: 20px;
+  border-width: 0px;
+  margin: 20px 14.1% 0px 14.1%;
+}
+table{
+  border-spacing: 0px;
+}
+td{
+  border-bottom: 1px solid white;
+  padding: 10px 0px;
+}
 
 
-
-input[type="text"],[type="password"]{
-  width: 97%;
+input{
+  width: 330px;
   height:40px;
   border-radius: 20px;
   border: 1px solid black;
-  padding: 0px 0px 0px 10px;
+  padding-left: 10px;
   margin: 5px;
 }
 input[type="submit"]{
   background-color: rgb(8, 8, 58);
   color: white;
-  padding: 0px 10px 0px 10px;
-  width: 100%;
-  height:40px;
-  border-radius: 20px;
-  margin: 5px 5px 20px 5px;
+  margin-bottom: 20px;
 }
 .container{
-  margin: 100px 100px;
+  margin: auto;
   width:400px;
   padding: 30px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   border-radius: 40px;
-}
-.mainContainer{
-  display: flex;
-  width: 100%;
-  
+  background: white;
+  position: fixed;
+  top: 25%;
+  left: 36%;
+  z-index: 10;
+  box-shadow: rgba(50, 50, 93, 0.25) -3px 6px 12px -2px, rgba(0, 0, 0, 0.3) -3px 3px 7px -3px;
+
 }
 .welcome{
   text-align: center;
@@ -173,10 +242,3 @@ input[type="submit"]{
   font-size: 15px;
 }
 
-
-
-
-
-
-
-  
