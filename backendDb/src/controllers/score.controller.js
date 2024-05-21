@@ -8,15 +8,12 @@
  
 
  const submitResult = asyncHandler( async (req, res)=>{
-    const {levelName, score} = req.body
+    const {levelId, score} = req.body
     const id = req.user?._id
-    if(levelName.trim() ===""){
-        throw new ApiError(400, "Could'n get levelname")
-    }
     if(!score){
         throw new ApiError(400, "Could'n get score")
     }
-    const levelExist = await Level.findOne({levelName});
+    const levelExist = await Level.findById(levelId);
     if(!levelExist)
     {
         throw new ApiError(409, "Level not found")

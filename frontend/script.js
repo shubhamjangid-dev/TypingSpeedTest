@@ -1,11 +1,13 @@
 let userLoggedIn = false;
+let activeLevelId ;
 const url = 'http://localhost:4500/api/v1';
 
 function getCookie(key) { 
-    let re = new RegExp(key + "=([^;]+)"); 
-    let value = re.exec(document.cookie); 
-    return (value != null) ? unescape(value[1]) : null; 
+  let re = new RegExp(key + "=([^;]+)"); 
+  let value = re.exec(document.cookie); 
+  return (value != null) ? decodeURIComponent(value[1]) : null; 
 }
+
 // TODO verify tokens if expired generate new or login again
 if(getCookie('refreshToken') != null)
 {
@@ -26,7 +28,7 @@ function loadAllLevels(){
     //   console.log(data);
         const levelBar = document.querySelector('.levelBar');
         data.forEach(element => {
-            levelBar.innerHTML += `<div class="level" id="${element._id}" >${element.levelName} <div class="score"></div></div>`;
+            levelBar.innerHTML += `<div class="level locked" id="${element._id}" >${element.levelName} <div class="score"></div></div>`;
         });
     })
     .catch(error => {
@@ -49,12 +51,14 @@ function getScoresOfLevel(){
     })
     .then(response => response.json())
     .then(data => {
-        console.log(data);
+        // console.log(data);
         
         data.forEach(element => {
             // console.log(element);
             document.getElementById(`${element.levelId}`).querySelector('.score').innerText = element.score;
+            removeClass(document.getElementById(`${element.levelId}`),'locked');
         });
+        removeClass(document.querySelector(`.locked`),'locked');
     })
     .catch(error => {
       console.error("Error:", error);
@@ -270,7 +274,7 @@ menuBar.addEventListener('click',()=>{
 
 levelBar.addEventListener('click', (e)=>{
     // console.log(e.target);
-    if(e.target.className === 'level')
+    if(e.target.className === 'level ' )
     {
       levelBar.style.display = 'none';
       article.style.display = 'block';
@@ -278,9 +282,14 @@ levelBar.addEventListener('click', (e)=>{
         // console.log(e.target);
         getLevelContent(e.target.getAttribute('id'))
     }
+    else if(e.target.className === 'level locked' )
+    {
+      alert("This level is locked");
+    }
 });
 function getLevelContent(levelId)
 {
+    activeLevelId = levelId;
     let data = {
         id : levelId
     }
@@ -314,7 +323,7 @@ const submitGame = function()
     let data = {
       accessToken: accessToken,
       refreshToken: refreshToken,
-      levelName : levelName,
+      levelId : activeLevelId,
       score: score,
     };
   
@@ -386,7 +395,7 @@ document.getElementById("login").addEventListener("submit", function(event) {
       if (data.success) {
         document.getElementById("response").innerText = "Login successful!";
         // document.querySelector("body").innerHTML = gamePage;
-        window.location.href = "./frontend/index.html";
+        // window.location.href = "./frontend/index.html";
         // Perform actions after successful login, like redirecting to another page
         document.querySelector('.container').style.display = "none";
         document.querySelector('.main').style.filter = "blur(0px)";
@@ -448,8 +457,44 @@ document.querySelector('.retry').addEventListener("click", () => {
     reset();
 });
 document.querySelector('.nextLevel').addEventListener("click", () => {
-
     reset();
 });
 
-  
+function myFunction() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+document.querySelector('body').addEventListener("click",()=>{
+  console.log("adsdf");
+  console.log(document.getElementById("myDropdown").className.includes("show"))
+  {
+    myFunction();
+  }
+});
+
+function logout(){
+  let data = {
+    accessToken: getCookie('accessToken'),
+    refreshToken: getCookie('refreshToken'),
+  }
+  fetch(`${url}/users/logout`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      console.log('logged out');
+    } else {
+      console.log('logout failed');
+    }
+  })
+  .catch(error => {
+    console.log("Error while logout:", error);
+  });
+  document.cookie = `accessToken=`;
+  document.cookie = `refreshToken=`;
+  window.location.href = "../login.html";
+}

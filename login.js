@@ -49,8 +49,8 @@ document.getElementById("login").addEventListener("submit", function(event) {
       if (data.success) {
         document.getElementById("response").innerText = "Login successful!";
         // document.querySelector("body").innerHTML = gamePage;
-        accessToken = data.data.accessToken;
-        refreshToken = data.data.refreshToken;
+        document.cookie = `accessToken=${encodeURIComponent(data.data.accessToken)};path=/frontend`;
+        document.cookie = `refreshToken=${encodeURIComponent(data.data.refreshToken)};path=/frontend`;
         window.location.href = "./frontend/index.html";
         // Perform actions after successful login, like redirecting to another page
       } else {
