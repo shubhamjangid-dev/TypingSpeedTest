@@ -3,10 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>user profile</title>
+    <title>User Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .profile-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 600px;
+        }
+        .profile-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .profile-container .profile-details {
+            margin-bottom: 20px;
+        }
+        .profile-container .profile-details p {
+            margin: 5px 0;
+        }
+        .profile-container .profile-actions {
+            text-align: center;
+        }
+        .profile-container .profile-actions button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px 0;
+            width: 100%;
+        }
+        .profile-container .profile-actions button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    userProfile
-    create a user profile page
+    <div class="profile-container">
+        <h2>User Profile</h2>
+        <div class="profile-details">
+            <p><strong>Name:</strong> John Doe</p>
+            <p><strong>Username:</strong> johndoe</p>
+            <p><strong>Email:</strong> john.doe@example.com</p>
+            <p><strong>Levels Passed:</strong> 12</p>
+            <p><strong>Average Score:</strong> 89.5</p>
+        </div>
+        <div class="profile-actions">
+            <button onclick="changeDetails()">Change Details</button>
+            <button onclick="changePassword()">Change Password</button>
+        </div>
+    </div>
+
+    <script>
+        function changeDetails() {
+            alert("Change Details functionality is not implemented yet.");
+        }
+
+        function changePassword() {
+            alert("Change Password functionality is not implemented yet.");
+        }
+    </script>
 </body>
 </html>

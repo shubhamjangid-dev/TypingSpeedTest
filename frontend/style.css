@@ -70,32 +70,45 @@ img{
 }
 .levelBar{
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  margin-right: 20px;
-  margin-top: 40px;
+  margin: 70px 5%;
   padding: .2%;
+  display: grid;
+  column-gap: 70px;
+  row-gap: 70px;
+  grid-template-columns:  20% 20% 20%;
 }
 .level{
-  width: 33%;
-  height: 100px;
+  width: 100%;
+  height: 200px;
   display: flex;
-  background-color: #6CB4EE;
-  margin: .5%;
-  padding : 0.7rem 0rem;
-  font-size: 1.5rem;
+  flex-direction: column;
   border-radius: 10px;
   justify-content: space-between;
   align-items: center;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
 }
 .level.locked{
   background-color: #a96cee;
 }
 .score{
   background-color: #054f8a;
-  margin-left: auto;
+  margin: auto;
   padding: 0px 5px;
   border-radius: 3px;
+  font-size: 200%;
+}
+.status{
+
+}
+.status.locked{
+
+}
+.title{
+  font-size: 15px;
+  padding: 10px 15px;
+  width: 100%;
+  text-align: center;
+  border-top: 1px solid #6CB4EE;
 }
 .article{
   width: 90%;
