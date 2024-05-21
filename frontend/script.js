@@ -6,7 +6,6 @@ function getCookie(key) {
     let value = re.exec(document.cookie); 
     return (value != null) ? unescape(value[1]) : null; 
 }
-
 // TODO verify tokens if expired generate new or login again
 if(getCookie('refreshToken') != null)
 {
@@ -15,7 +14,7 @@ if(getCookie('refreshToken') != null)
     userLoggedIn = true;
 }
 
-const loadAllLevels = function(){
+function loadAllLevels(){
     fetch(`${url}/levels/getAllLevels`, {
       method: "POST",
       headers: {
@@ -37,7 +36,7 @@ const loadAllLevels = function(){
     getScoresOfLevel()
 }
 
-const getScoresOfLevel = function(){
+function getScoresOfLevel(){
     let refreshToken = getCookie('refreshToken');
     let accessToken = getCookie('accessToken');
     if(refreshToken == null || accessToken == null)return;
@@ -111,6 +110,7 @@ const reset = function(){
     newGame();
 };
 
+document.getElementById("reset").addEventListener("click",reset);
 
 function updateTime(){
     endTime = new Date().getTime();
@@ -241,10 +241,44 @@ window.addEventListener('keydown', function (e){
       WordsPerMinEle.innerHTML = `${WPM}<br>Words Per Minute`
 }})
 
+let menuHidden = false;
+const menuBar = document.querySelector('.menu');
+const levelBar = document.querySelector('.levelBar');
+const article = document.querySelector('.article');
+menuBar.addEventListener('click',()=>{
+    if(menuHidden)
+    {
+      levelBar.style.display = 'block';
+      article.style.display = 'none';
+        levelBar.style.width = '100%';
+        // document.querySelector('.article').style.width = '80%';
+        // document.querySelector('.article').style.left = '22%';
 
+        menuHidden = false;
+    }
+    else{
+      levelBar.style.display = 'none';
+      article.style.display = 'block';
+        // document.querySelector('.levelBar').style.width = '0%';
+        // document.querySelector('.article').style.width = '100%';
+        // document.querySelector('.article').style.left = '4%';
+        menuHidden = true;
+    }
+})
 
 // POST REQUESTS WITH BACKEND
 
+levelBar.addEventListener('click', (e)=>{
+    // console.log(e.target);
+    if(e.target.className === 'level')
+    {
+      levelBar.style.display = 'none';
+      article.style.display = 'block';
+        menuHidden = true;
+        // console.log(e.target);
+        getLevelContent(e.target.getAttribute('id'))
+    }
+});
 function getLevelContent(levelId)
 {
     let data = {
@@ -410,46 +444,12 @@ document.getElementById("register").addEventListener("submit", function(event) {
     });
   });
   
-
-  // EVENT LISTENERS
-
-levelBar.addEventListener('click', (e)=>{
-  // console.log(e.target);
-  if(e.target.className === 'level')
-  {
-    levelBar.style.display = 'none';
-    article.style.display = 'block';
-      menuHidden = true;
-      // console.log(e.target);
-      getLevelContent(e.target.getAttribute('id'))
-  }
+document.querySelector('.retry').addEventListener("click", () => {
+    reset();
 });
-
-let menuHidden = false;
-const menuBar = document.querySelector('.menu');
-const levelBar = document.querySelector('.levelBar');
-const article = document.querySelector('.article');
-menuBar.addEventListener('click',()=>{
-    if(menuHidden)
-    {
-      levelBar.style.display = 'block';
-      article.style.display = 'none';
-      levelBar.style.width = '100%';
-      menuHidden = false;
-    }
-    else{
-      levelBar.style.display = 'none';
-      article.style.display = 'block';
-      menuHidden = true;
-    }
-})
-
-document.getElementById("reset").addEventListener("click",reset);
-
-document.querySelector('.retry').addEventListener("click",reset);
-
 document.querySelector('.nextLevel').addEventListener("click", () => {
 
     reset();
 });
+
   
