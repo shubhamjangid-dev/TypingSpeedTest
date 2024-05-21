@@ -5,8 +5,8 @@
 }
 body{
   font-family: "Inter", sans-serif;
-    font-size: 2.4rem;
-    justify-content: center;
+  font-size: 2.4rem;
+  justify-content: center;
 }
 #header{
     display: flex;
@@ -63,7 +63,6 @@ img{
   width: 40%;
   text-align: right;
 }
-
 .main{
   display:flex;
   filter: blur(4px);
@@ -82,9 +81,10 @@ img{
 }
 .level{
   width: 33%;
+  height: 100px;
   display: flex;
   background-color: #6CB4EE;
-  margin: 4%;
+  margin: .5%;
   padding : 0.7rem 0rem;
   font-size: 1.5rem;
   border-radius: 10px;

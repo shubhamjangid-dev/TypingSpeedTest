@@ -1,17 +1,21 @@
 let userLoggedIn = false;
 const url = 'http://localhost:4500/api/v1';
+
 function getCookie(key) { 
     let re = new RegExp(key + "=([^;]+)"); 
     let value = re.exec(document.cookie); 
     return (value != null) ? unescape(value[1]) : null; 
 }
+
+// TODO verify tokens if expired generate new or login again
 if(getCookie('refreshToken') != null)
 {
     document.querySelector('.container').style.display = "none";
     document.querySelector('.main').style.filter = "blur(0px)";
     userLoggedIn = true;
 }
-function loadAllLevels(){
+
+const loadAllLevels = function(){
     fetch(`${url}/levels/getAllLevels`, {
       method: "POST",
       headers: {
@@ -33,7 +37,7 @@ function loadAllLevels(){
     getScoresOfLevel()
 }
 
-function getScoresOfLevel(){
+const getScoresOfLevel = function(){
     let refreshToken = getCookie('refreshToken');
     let accessToken = getCookie('accessToken');
     if(refreshToken == null || accessToken == null)return;
@@ -58,8 +62,10 @@ function getScoresOfLevel(){
       console.log("An error occurred. Please try again later.");
     });
 }
-let words = "the brown dog jumped over lazy fox chasing its tail through green meadow birds chirped melodiously above while a gentle breeze rustled leaves of the tall trees sunlight filtered through the canopy casting dappled shadows on the forest floor scent of pine and earth filled the air mingling with the sweet fragrance of wildflowers butterflies danced among the blooms their colorful wings fluttering gracefully in the distance a stream gurgled softly its clear waters reflecting the azure sky above nature symphony played on a tranquil melody in this serene wilderness".split(' ');
-const wordCount = words.length;
+
+
+// GAME RELATED IN FRONTEND
+let words = "hjsdgfgfk kjasfhkashfkj kshfdkjashfk kjshdfkjahs".split(' ');
 
 let gameStart = false;
 let startTime, endTime;
@@ -76,16 +82,9 @@ function removeClass(element,name){
     element.className = element.className.replace(name,'');
 }
 
-
-function randomWord(){
-    const randomIndex = Math.floor(Math.random()*wordCount)
-    return words[randomIndex];
-}
-
 function formatWord(word){
     return `<div class = "word"><span class = "letter">${word.split('').join('</span><span class = "letter">')}</span><span class = "letter">&nbsp</span></div>`
 }
-
 
 function newGame(){
   const typingArea = document.getElementById('words');
@@ -99,6 +98,7 @@ function newGame(){
   addClass(document.querySelector('.word'),'current');
   addClass(document.querySelector('.letter'),'current');
 }
+
 const reset = function(){
     gameStart = false;
     flagOfNewLine = false;
@@ -110,15 +110,17 @@ const reset = function(){
     document.getElementById('words').style.marginTop = '0px';
     newGame();
 };
-document.getElementById("reset").addEventListener("click",reset);
+
 
 function updateTime(){
     endTime = new Date().getTime();
     let seconds = ((endTime - startTime)/1000).toFixed(0);
     clock.innerText = `${seconds} sec`
 }
-let myInterval;
 
+let myInterval;
+const accuracyEle = document.getElementById('accuracy');
+const WordsPerMinEle =document.getElementById('WordsPerMin');
 window.addEventListener('keydown', function (e){
     if(userLoggedIn)
     {
@@ -228,52 +230,27 @@ window.addEventListener('keydown', function (e){
     const noOfCorrectLetters = document.querySelectorAll('.correct').length
     const noOfWrongLetters = document.querySelectorAll('.wrong').length
     const Accuracy = (100* noOfCorrectLetters/(noOfCorrectLetters+noOfWrongLetters)).toFixed(1);
-    const WPM = ((noOfWords)/((endTime-startTime)/60000)).toFixed(0);
-    this.document.getElementById('accuracy').innerHTML = `${Accuracy}%<br>Accuracy`
-    this.document.getElementById('WordsPerMin').innerHTML = `${WPM}<br>Words Per Minute`
+    const dur = (endTime-startTime)/60000;
+    const WPM = (noOfWords/dur).toFixed(0);
+    accuracyEle.innerHTML = `${Accuracy}%<br>Accuracy`
+    if(dur == 0)
+    {
+      WordsPerMinEle.innerHTML = `0<br>Words Per Minute`
+    }
+    else
+      WordsPerMinEle.innerHTML = `${WPM}<br>Words Per Minute`
 }})
-newGame();
 
-let menuHidden = false;
 
-document.querySelector('.menu').addEventListener('click',()=>{
-    if(menuHidden)
-    {
-        document.querySelector('.levelBar').style.display = 'block';
-        document.querySelector('.article').style.display = 'none';
-        document.querySelector('.levelBar').style.width = '100%';
-        // document.querySelector('.article').style.width = '80%';
-        // document.querySelector('.article').style.left = '22%';
 
-        menuHidden = false;
-    }
-    else{
-        document.querySelector('.levelBar').style.display = 'none';
-        document.querySelector('.article').style.display = 'block';
-        // document.querySelector('.levelBar').style.width = '0%';
-        // document.querySelector('.article').style.width = '100%';
-        // document.querySelector('.article').style.left = '4%';
-        menuHidden = true;
-    }
-})
+// POST REQUESTS WITH BACKEND
 
-document.querySelector('.levelBar').addEventListener('click', (e)=>{
-    // console.log(e.target);
-    if(e.target.className === 'level')
-    {
-        document.querySelector('.levelBar').style.display = 'none';
-        document.querySelector('.article').style.display = 'block';
-        menuHidden = true;
-        console.log(e.target);
-        getLevelContent(e.target.getAttribute('id'))
-    }
-});
 function getLevelContent(levelId)
 {
     let data = {
         id : levelId
     }
-    fetch("http://localhost:4500/api/v1/levels/getLevelContent", {
+    fetch(`${url}/levels/getLevelContent`, {
         method: "POST",
         headers: {
         "Content-Type": "application/json"
@@ -285,21 +262,24 @@ function getLevelContent(levelId)
         // console.log(data.levelContent);
         words = data.levelContent.split(' ');
         document.querySelector('.levelName').innerText = data.levelName;
+        reset();
     })
     .catch(error => {
         console.error("Error:", error);
         document.getElementById("response").innerText = "An error occurred. Please try again later.";
     });
-    reset();
+    
 }
-function submitGame()
+const submitGame = function()
 {
+    let refreshToken = getCookie('refreshToken');
+    let accessToken = getCookie('accessToken');
     let score = parseInt(document.getElementById("WordsPerMin").innerText);
-    let username = document.querySelector(".userDetails").innerText;
     let levelName = document.querySelector(".levelName").innerText;
 
     let data = {
-      username: username,
+      accessToken: accessToken,
+      refreshToken: refreshToken,
       levelName : levelName,
       score: score,
     };
@@ -314,6 +294,8 @@ function submitGame()
     .then(response => response.json())
     .then(data => {
       if (data.success) {
+        console.log(data.data);
+        document.getElementById(`${data.data.level}`).querySelector('.score').innerText = data.data.score;
         clearInterval(myInterval);
         console.log("result submitted");
       } else {
@@ -324,7 +306,6 @@ function submitGame()
       console.error("Error:", error);
       console.log("An error occurred. Please try again later.");
     });
-    getScoresOfLevel();
 }
 loadAllLevels();
 
@@ -429,12 +410,46 @@ document.getElementById("register").addEventListener("submit", function(event) {
     });
   });
   
-document.querySelector('.retry').addEventListener("click", () => {
-    reset();
+
+  // EVENT LISTENERS
+
+levelBar.addEventListener('click', (e)=>{
+  // console.log(e.target);
+  if(e.target.className === 'level')
+  {
+    levelBar.style.display = 'none';
+    article.style.display = 'block';
+      menuHidden = true;
+      // console.log(e.target);
+      getLevelContent(e.target.getAttribute('id'))
+  }
 });
+
+let menuHidden = false;
+const menuBar = document.querySelector('.menu');
+const levelBar = document.querySelector('.levelBar');
+const article = document.querySelector('.article');
+menuBar.addEventListener('click',()=>{
+    if(menuHidden)
+    {
+      levelBar.style.display = 'block';
+      article.style.display = 'none';
+      levelBar.style.width = '100%';
+      menuHidden = false;
+    }
+    else{
+      levelBar.style.display = 'none';
+      article.style.display = 'block';
+      menuHidden = true;
+    }
+})
+
+document.getElementById("reset").addEventListener("click",reset);
+
+document.querySelector('.retry').addEventListener("click",reset);
+
 document.querySelector('.nextLevel').addEventListener("click", () => {
 
     reset();
 });
-  
   

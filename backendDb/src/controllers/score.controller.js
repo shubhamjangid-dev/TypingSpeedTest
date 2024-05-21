@@ -8,23 +8,20 @@
  
 
  const submitResult = asyncHandler( async (req, res)=>{
-    const {levelName, username, score} = req.body
+    const {levelName, score} = req.body
+    const id = req.user?._id
     if(levelName.trim() ===""){
         throw new ApiError(400, "Could'n get levelname")
-    }
-    if(username.trim() ===""){
-        throw new ApiError(400, "Could'n get username")
     }
     if(!score){
         throw new ApiError(400, "Could'n get score")
     }
-
     const levelExist = await Level.findOne({levelName});
     if(!levelExist)
     {
         throw new ApiError(409, "Level not found")
     }
-    const userExist = await User.findOne({username});
+    const userExist = await User.findById(id);
     if(!userExist)
     {
         throw new ApiError(409, "User not found")
@@ -37,7 +34,7 @@
     })
     if(resultExist != null)
     {
-        const createdResult = await LevelAchieved.findByIdAndUpdate(
+        const storedResult = await LevelAchieved.findByIdAndUpdate(
         resultExist._id,
         {
             $set:{
@@ -49,7 +46,7 @@
         }
         )
         res.status(201).json(
-            new ApiResponse(200, createdResult, "Result Updated Successfully")
+            new ApiResponse(200, storedResult, "Result Updated Successfully")
         )
     }
     else
