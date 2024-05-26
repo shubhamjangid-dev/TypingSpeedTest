@@ -38,7 +38,7 @@ img{
   color: white;
   /* top: 150px; */
   top: 0px;
-  background-color: rgb(3, 7, 45);
+  background-color: black;
   height: 35px;
   width: 100%;
   display: flex;
@@ -66,7 +66,7 @@ img{
 .main{
   display:flex;
   filter: blur(4px);
-  z-index: -1;
+  background-color: white;
 }
 .levelBar{
   width: 100%;
@@ -88,27 +88,63 @@ img{
   box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
 }
 .level.locked{
+<<<<<<< HEAD
   background-color: #aaaaaa;
+=======
+background-color: white;
+
+>>>>>>> refs/remotes/origin/main
 }
+.level.locked:hover{
+  transition:0.3s all ease-in-out;
+  transform: scale(1.1);
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.level.unlocked{
+  background-color: white;
+}
+  .level.unlocked:hover{
+    transition:0.3s all ease-in-out;
+    transform: scale(1.1);
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  }
+ .image_un{
+   translate: 0px -35px;
+ }
+ .check{
+  translate:0px 60px;
+  z-index: 10;
+  }
 .score{
-  background-color: #054f8a;
-  margin: auto;
-  padding: 0px 5px;
+  background-color:#4d5156 ;
+  display: inline;
   border-radius: 3px;
-  font-size: 200%;
+  translate: 0px -80px;
+  padding: 3px 2px;
+  font-size: large;
+}
+.level_no{
+align-self: start;
+padding-left: 7px;
 }
 .status{
-
+color:gray;
+translate: 98px -40px ;
 }
-.status.locked{
-
+.image{
+translate: 0px -80px;
+height:70px;
+mix-blend-mode: multiply;
 }
+
 .title{
   font-size: 15px;
   padding: 10px 15px;
   width: 100%;
   text-align: center;
-  border-top: 1px solid #6CB4EE;
+  border-top: 1px solid black;
 }
 .article{
   width: 90%;
